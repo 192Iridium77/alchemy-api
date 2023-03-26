@@ -15,6 +15,9 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 
+app.use("/health", (req, res, next) => {
+  res.sendStatus(200);
+});
 app.use("/", authRouter);
 app.use("/users", usersRouter);
 
