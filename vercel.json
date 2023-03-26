@@ -1,8 +1,8 @@
 {
   "version": 2,
+  "buildCommand": "npm run build",
   "builds": [
     {
-      "buildCommand": "npm run build",
       "src": "dist/server.js",
       "use": "@vercel/node",
       "config": { "includeFiles": ["dist/**"] }
