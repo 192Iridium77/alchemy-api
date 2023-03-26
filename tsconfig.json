@@ -7,8 +7,9 @@
     "allowJs": true,
     "resolveJsonModule": true,
     "esModuleInterop": true,
-    "outDir": "./build",
-    "rootDir": "src"
+    "outDir": "./dist",
+    "rootDir": "src",
+    "sourceMap": true
   },
   "include": ["src/**/*"],
   "exclude": ["./node_modules"]
