@@ -5,8 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "nodemon src/server.ts",
-    "build": "rm -rf dist && tsc",
-    "vercel-build": "rm -rf dist && tsc",
+    "vercel-build": "rm -rf public && tsc --outDir public",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
