@@ -1,12 +1,11 @@
-const knex = require("knex")({
-  client: "pg",
-  version: "8.7.3",
-  connection: {
-    host: "127.0.0.1",
-    port: 5432,
-    user: "postgres",
-    password: "postgres",
-  },
-});
+const knexfile = require("../../knexfile.js");
 
-export default knex;
+import { knex } from "knex";
+
+const knexInstance = knex(knexfile[process.env.NODE_ENV]);
+
+export const config = {
+  timeout: 10000,
+};
+
+export default knexInstance;

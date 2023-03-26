@@ -1,51 +1,20 @@
 #!/usr/bin/env node
 
-/**
- * Module dependencies.
- */
-import * as dotenv from "dotenv"; // see https://github.com/motdotla/dotenv#how-do-i-use-dotenv-with-import
+import * as dotenv from "dotenv";
 import { debug } from "console";
-var app = require("./app");
-var http = require("http");
+import app from "./app";
+import http from "http";
 
 dotenv.config();
 
-var port = normalizePort(process.env.PORT || "3000");
+const port = process.env.PORT || "3000";
 app.set("port", port);
 
-/**
- * Create HTTP server.
- */
-
-var server = http.createServer(app);
+const server = http.createServer(app);
 
 server.listen(port);
 server.on("error", onError);
 server.on("listening", onListening);
-
-/**
- * Normalize a port into a number, string, or false.
- */
-
-function normalizePort(val) {
-  var port = parseInt(val, 10);
-
-  if (isNaN(port)) {
-    // named pipe
-    return val;
-  }
-
-  if (port >= 0) {
-    // port number
-    return port;
-  }
-
-  return false;
-}
-
-/**
- * Event listener for HTTP server "error" event.
- */
 
 function onError(error) {
   if (error.syscall !== "listen") {
@@ -69,12 +38,8 @@ function onError(error) {
   }
 }
 
-/**
- * Event listener for HTTP server "listening" event.
- */
-
 function onListening() {
-  var addr = server.address();
-  var bind = typeof addr === "string" ? "pipe " + addr : "port " + addr.port;
+  const addr = server.address();
+  const bind = typeof addr === "string" ? "pipe " + addr : "port " + addr.port;
   debug("Listening on " + bind);
 }

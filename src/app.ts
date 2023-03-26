@@ -1,12 +1,12 @@
-var createError = require("http-errors");
-var express = require("express");
-var cookieParser = require("cookie-parser");
-var logger = require("morgan");
-var cors = require("cors");
+import createError from "http-errors";
+import express from "express";
+import cookieParser from "cookie-parser";
+import logger from "morgan";
+import cors from "cors";
 
-import { authRouter, usersRouter } from "./routes";
+import router from "./router";
 
-var app = express();
+const app = express();
 
 app.use(cors({ origin: "http://localhost:3000" }));
 
@@ -18,8 +18,8 @@ app.use(cookieParser());
 app.use("/", (req, res, next) => {
   res.send("HOME");
 });
-// app.use("/", authRouter);
-// app.use("/users", usersRouter);
+
+app.use("/", router);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
@@ -35,4 +35,4 @@ app.use(function (err, req, res, next) {
   res.sendStatus(err.status || 500);
 });
 
-module.exports = app;
+export default app;
