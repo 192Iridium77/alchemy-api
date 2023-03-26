@@ -4,8 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon src/server.ts",
-    "vercel-build": "rm -rf public && tsc --outDir public",
+    "start": "nodemon src/index.ts",
+    "vercel-build": "rm -rf api && tsc --outDir api",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
