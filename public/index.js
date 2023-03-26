@@ -62,4 +62,4 @@ function onListening() {
     const bind = typeof addr === "string" ? "pipe " + addr : "port " + addr.port;
     (0, console_1.debug)("Listening on " + bind);
 }
-//# sourceMappingURL=server.js.map
+//# sourceMappingURL=index.js.map
