@@ -8,9 +8,9 @@
     "resolveJsonModule": true,
     "esModuleInterop": true,
     "outDir": "./dist",
-    "rootDir": "src",
+    "rootDir": "api",
     "sourceMap": true
   },
-  "include": ["src/**/*"],
+  "include": ["api/**/*"],
   "exclude": ["./node_modules"]
 }
