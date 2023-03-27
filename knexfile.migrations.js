@@ -16,7 +16,7 @@ module.exports = {
     },
   },
   production: {
-    client: "postgresql",
+    client: "cockroachdb",
     connection: process.env.DB_CONNECTION_STRING,
     pool: {
       min: 2,

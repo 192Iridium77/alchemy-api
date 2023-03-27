@@ -1,13 +1,13 @@
 import db, { config } from "../services/db/db";
 import { User, UserRole } from "./user.types";
-import uuid from "uuid";
+import { v4 as uuid } from "uuid";
 import bcrypt from "bcrypt";
 
 const table = {
   name: "users",
 };
 
-const availableFields = ["id", "role", "createdAt", "updatedAt", "password"];
+const availableFields = ["id", "role", "created_at", "updated_at", "password"];
 
 const query = db.from(table.name);
 
@@ -19,10 +19,8 @@ const create = async ({
   const salt = await bcrypt.genSalt();
   const encryptedPassword = await bcrypt.hash(password, salt);
 
-  return db
-    .insert({ id: uuid.v4(), username, password: encryptedPassword, role })
-    .returning(availableFields)
-    .into(table.name)
+  return db(table.name)
+    .insert({ id: uuid(), username, password: encryptedPassword, role })
     .timeout(config.timeout);
 };
 
@@ -35,10 +33,11 @@ const find = async (filters): Promise<User> => {
     .select<User>(availableFields)
     .from(table.name)
     .where(filters)
+    .first()
     .timeout(config.timeout);
 };
 
-const update = (id, props) => {
+const update = async (id, props) => {
   delete props.id;
 
   return db
@@ -51,7 +50,7 @@ const update = (id, props) => {
     .timeout(config.timeout);
 };
 
-const destroy = (id) => {
+const destroy = async (id) => {
   return db
     .del()
     .from(table.name)

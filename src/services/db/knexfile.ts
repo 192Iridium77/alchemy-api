@@ -12,10 +12,11 @@ export default {
       port: 5432,
       user: "postgres",
       password: "postgres",
+      database: "alchemy",
     },
   },
   production: {
-    client: "postgresql",
+    client: "cockroachdb",
     connection: process.env.DB_CONNECTION_STRING,
     pool: {
       min: 2,

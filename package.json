@@ -5,9 +5,11 @@
   "main": "index.js",
   "scripts": {
     "start": "nodemon src/server.ts | bunyan --color -o short",
-    "create-db": "node ./createDatabase | bunyan --color",
+    "create-db": "ts-node ./src/services/db/create | bunyan --color",
     "migrate:latest": "knex migrate:latest --knexfile knexfile.migrations.js",
     "migrate:make": "knex migrate:make --knexfile knexfile.migrations.js",
+    "prod:create-db": "NODE_ENV=production ts-node ./src/services/db/create | bunyan --color",
+    "prod:migrate:make": "knex migrate:make --knexfile knexfile.migrations.js --env production",
     "build": "rm -rf dist && tsc",
     "test": "echo \"Error: no test specified\" && exit 1"
   },

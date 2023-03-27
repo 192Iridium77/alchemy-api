@@ -11,7 +11,6 @@ export function loggerMiddleware(req, res, next) {
     method: req.method,
     url: req.url,
     user: req.user,
-    status: res.statusCode,
   });
   next();
 }
