@@ -3,8 +3,9 @@ var router = express.Router();
 import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
 import { authenticateToken } from "../auth/auth.middleware";
-import db from "../db";
 import { omit } from "lodash";
+import UserModel from "../user/user.model";
+import userModel from "../user/user.model";
 
 router.post("/login", async function (req, res, next) {
   const {
@@ -14,10 +15,7 @@ router.post("/login", async function (req, res, next) {
   if (!username) return res.status(401).send("Username is required");
   if (!password) return res.status(401).send("Password is required");
 
-  const users = await db.select().where({ username }).from("users");
-
-  const user = users.length === 1 ? users[0] : undefined;
-
+  const user = await UserModel.find({ username });
   if (!user) return res.sendStatus(401);
 
   try {
@@ -38,8 +36,15 @@ router.post("/login", async function (req, res, next) {
   }
 });
 
-router.get("/", authenticateToken, function (req, res, next) {
-  res.json({ status: 200 });
+router.post("/signup", async function (req, res, next) {
+  const {
+    body: { username, password },
+  } = req;
+
+  if (!username) return res.status(401).send("Username is required");
+  if (!password) return res.status(401).send("Password is required");
+
+  await UserModel.create({ username, password });
 });
 
 export default router;

@@ -4,7 +4,10 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon src/server.ts",
+    "start": "nodemon src/server.ts | bunyan --color -o short",
+    "create-db": "node ./createDatabase | bunyan --color",
+    "migrate:latest": "knex migrate:latest --knexfile knexfile.migrations.js",
+    "migrate:make": "knex migrate:make --knexfile knexfile.migrations.js",
     "build": "rm -rf dist && tsc",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -27,6 +30,7 @@
     "@babel/node": "^7.20.7",
     "@babel/preset-env": "^7.20.2",
     "bcrypt": "^5.1.0",
+    "bunyan": "^1.8.15",
     "cookie-parser": "^1.4.6",
     "cors": "^2.8.5",
     "express": "^4.18.2",

@@ -1,5 +1,5 @@
 import jwt from "jsonwebtoken";
-import db from "../db";
+import db from "../services/db/db";
 
 export function authenticateToken(req, res, next) {
   const authHeader = req.headers["authorization"];

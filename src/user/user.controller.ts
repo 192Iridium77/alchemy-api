@@ -6,4 +6,10 @@ const getUsers = (context, filters) => {
   return UserModel.findAll();
 };
 
-export { getUsers };
+const getUser = (context, { id }) => {
+  // todo authorisation
+  // todo logging
+  return UserModel.find({ id });
+};
+
+export { getUsers, getUser };

@@ -4,6 +4,9 @@ import * as dotenv from "dotenv";
 import { debug } from "console";
 import app from "./app";
 import http from "http";
+import { createLogger } from "./services/logger/logger";
+
+const logger = createLogger("Server");
 
 dotenv.config();
 
@@ -41,5 +44,5 @@ function onError(error) {
 function onListening() {
   const addr = server.address();
   const bind = typeof addr === "string" ? "pipe " + addr : "port " + addr.port;
-  debug("Listening on " + bind);
+  logger.info(`Listening on ${bind}`);
 }

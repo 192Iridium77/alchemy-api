@@ -1,29 +1,38 @@
-import db, { config } from "../db";
+import db, { config } from "../services/db/db";
+import { User, UserRole } from "./user.types";
+import uuid from "uuid";
+import bcrypt from "bcrypt";
 
 const table = {
   name: "users",
 };
 
-const availableFields = ["id", "role", "createdAt", "updatedAt"];
+const availableFields = ["id", "role", "createdAt", "updatedAt", "password"];
 
 const query = db.from(table.name);
 
-const create = (props) => {
-  delete props.id;
+const create = async ({
+  username,
+  password,
+  role = UserRole.BASIC,
+}: Partial<User>) => {
+  const salt = await bcrypt.genSalt();
+  const encryptedPassword = await bcrypt.hash(password, salt);
+
   return db
-    .insert(props)
+    .insert({ id: uuid.v4(), username, password: encryptedPassword, role })
     .returning(availableFields)
     .into(table.name)
     .timeout(config.timeout);
 };
 
-const findAll = () => {
+const findAll = async (): Promise<User[]> => {
   return db.select(availableFields).from(table.name).timeout(config.timeout);
 };
 
-const find = (filters) => {
+const find = async (filters): Promise<User> => {
   return db
-    .select(availableFields)
+    .select<User>(availableFields)
     .from(table.name)
     .where(filters)
     .timeout(config.timeout);
