@@ -7,7 +7,7 @@ exports.up = async function (knex) {
   await knex.schema.createTable("users", function (table) {
     table.uuid("id", { primaryKey: true });
     table.string("username");
-    table.string("email");
+    table.string("email").unique();
     table.string("password");
     table.string("role");
     table.timestamps();

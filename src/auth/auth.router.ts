@@ -64,6 +64,12 @@ router.post("/signup", async function (req, res, next) {
   }
   if (!password) return res.status(401).send("Password is required");
 
+  const existing = UserModel.find({ email });
+
+  if (existing) {
+    return res.sendStatus(409);
+  }
+
   try {
     await UserModel.create({ email, password });
     res.sendStatus(200);

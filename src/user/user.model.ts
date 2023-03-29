@@ -12,7 +12,7 @@ const availableFields = ["id", "role", "created_at", "updated_at", "password"];
 const query = db.from(table.name);
 
 const create = async ({
-  username,
+  email,
   password,
   role = UserRole.BASIC,
 }: Partial<User>) => {
@@ -20,7 +20,7 @@ const create = async ({
   const encryptedPassword = await bcrypt.hash(password, salt);
 
   return db(table.name)
-    .insert({ id: uuid(), username, password: encryptedPassword, role })
+    .insert({ id: uuid(), email, password: encryptedPassword, role })
     .timeout(config.timeout);
 };
 
