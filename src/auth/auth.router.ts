@@ -64,9 +64,10 @@ router.post("/signup", async function (req, res, next) {
   }
   if (!password) return res.status(401).send("Password is required");
 
-  const existing = UserModel.find({ email });
+  const existing = await UserModel.find({ email });
 
   if (existing) {
+    logger.info({ userId: existing.id, userEmail: existing.email });
     return res.sendStatus(409);
   }
 
