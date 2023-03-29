@@ -1,6 +1,7 @@
 import jwt from "jsonwebtoken";
-import db from "../services/db/db";
 import { createLogger } from "../services/logger/logger";
+import UserModel from "../user/user.model";
+import { UserRole } from "../user/user.types";
 
 const logger = createLogger("Auth");
 
@@ -27,9 +28,13 @@ export function authenticateToken(req, res, next) {
 export async function isAdmin(req, res) {
   const { user } = req;
 
-  const matchedUsers = await db.select().where({ id: user.id }).from("users");
-  const loggedInUser = matchedUsers.length === 1 ? matchedUsers[0] : undefined;
+  const loggedInUser = await UserModel.find({ id: user.id });
 
-  if (!loggedInUser) return res.sendStatus(401);
-  if (loggedInUser.role !== "admin") return res.sendStatus(403);
+  if (!loggedInUser) {
+    res.sendStatus(401);
+  }
+
+  if (loggedInUser.role !== UserRole.ADMIN) {
+    res.sendStatus(403);
+  }
 }

@@ -1,28 +1,29 @@
-var express = require("express");
-var router = express.Router();
+import express from "express";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
 import { omit } from "lodash";
 import UserModel from "../user/user.model";
 import { createLogger } from "../services/logger/logger";
 
+const router = express.Router();
+
 const logger = createLogger("AuthRouter");
 
-router.post("/login", async function (req, res, next) {
+router.post("/login", async function (req, res) {
   const {
-    body: { username, password },
+    body: { email, password },
   } = req;
 
-  if (!username) {
-    logger.warn("Username is required");
-    return res.status(401).send("Username is required");
+  if (!email) {
+    logger.warn("Email is required");
+    return res.status(401).send("Email is required");
   }
   if (!password) {
     logger.warn("Password is required");
     return res.status(401).send("Password is required");
   }
 
-  const user = await UserModel.find({ username });
+  const user = await UserModel.find({ email });
   if (!user) {
     logger.warn("Unauthorised");
     return res.sendStatus(401);
@@ -53,19 +54,23 @@ router.post("/login", async function (req, res, next) {
 
 router.post("/signup", async function (req, res, next) {
   const {
-    body: { username, password },
+    body: { email, password },
   } = req;
 
-  if (!username) {
-    const message = "Username is required";
+  if (!email) {
+    const message = "Email is required";
     logger;
     return res.status(401).send(message);
   }
   if (!password) return res.status(401).send("Password is required");
 
-  const user = await UserModel.create({ username, password });
-
-  res.send(user);
+  try {
+    await UserModel.create({ email, password });
+    res.sendStatus(200);
+  } catch (error) {
+    logger.error({ error }, "An unknown Error occured while creating the user");
+    res.sendStatus(500);
+  }
 });
 
 export default router;
