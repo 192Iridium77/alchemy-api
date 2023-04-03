@@ -1,7 +1,6 @@
 const dotenv = require("dotenv");
 const bunyan = require("bunyan");
 import db from "./db";
-console.log("🚀 ~ file: create.ts:4 ~ db:", db);
 dotenv.config();
 
 const logger = bunyan.createLogger({ name: "CreateDB" });

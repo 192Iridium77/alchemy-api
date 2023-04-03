@@ -9,9 +9,9 @@ router.get("/:id", authenticateToken, async function (req: any, res, next) {
 
   if (!params.id) res.sendStatus(404);
 
-  const users = await getUser({ user }, { id: params.id });
+  const data = await getUser({ user }, { id: params.id });
 
-  res.status(200).json(users);
+  res.status(200).json(data);
 });
 
 export default router;

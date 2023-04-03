@@ -38,7 +38,7 @@ router.post("/login", async function (req, res) {
         process.env.JWT_SECRET
       );
 
-      return res.json({ accessToken, status: 200 });
+      return res.json({ userId: user.id, accessToken, status: 200 });
     } else {
       logger.warn("Unauthorised");
       return res.sendStatus(401);
