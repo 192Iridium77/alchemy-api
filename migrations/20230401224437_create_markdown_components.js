@@ -6,7 +6,7 @@ exports.up = async function (knex) {
   await knex.schema.createTable("markdownComponents", function (table) {
     table.uuid("id", { primaryKey: true });
     table.string("text");
-    table.timestamps();
+    table.timestamps(true, true);
   });
 };
 

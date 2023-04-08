@@ -1,7 +1,7 @@
 import jwt from "jsonwebtoken";
 import { createLogger } from "../services/logger/logger";
-import UserModel from "../user/user.model";
-import { UserRole } from "../user/user.types";
+import UserModel from "../users/user.model";
+import { UserRole } from "../users/user.types";
 
 const logger = createLogger("Auth");
 
@@ -25,7 +25,7 @@ export function authenticateToken(req, res, next) {
   });
 }
 
-export async function isAdmin(req, res) {
+export async function isAdmin(req, res, next) {
   const { user } = req;
 
   const loggedInUser = await UserModel.find({ id: user.id });
@@ -37,4 +37,5 @@ export async function isAdmin(req, res) {
   if (loggedInUser.role !== UserRole.ADMIN) {
     res.sendStatus(403);
   }
+  next();
 }

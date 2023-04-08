@@ -6,7 +6,7 @@ const table = {
   name: "articles",
 };
 
-const availableFields = ["id", "role", "created_at", "updated_at", "password"];
+const availableFields = ["id", "title", "slug", "draft", "description"];
 
 const query = db.from(table.name);
 
@@ -15,14 +15,19 @@ const create = async ({
   slug,
   draft,
   description,
+  author,
 }: Partial<Article>) => {
   return db(table.name)
-    .insert({ id: uuid(), title, slug, draft, description })
+    .insert({ id: uuid(), title, slug, draft, description, author })
     .timeout(config.timeout);
 };
 
-const findAll = async (): Promise<Article[]> => {
-  return db.select(availableFields).from(table.name).timeout(config.timeout);
+const findAll = async (filters): Promise<Article[]> => {
+  return db(table.name)
+    .select(availableFields)
+    .from(table.name)
+    .timeout(config.timeout)
+    .where(filters);
 };
 
 const find = async (filters): Promise<Article> => {

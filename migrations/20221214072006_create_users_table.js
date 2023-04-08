@@ -10,7 +10,7 @@ exports.up = async function (knex) {
     table.string("email").unique();
     table.string("password");
     table.string("role");
-    table.timestamps();
+    table.timestamps(true, true);
   });
 };
 

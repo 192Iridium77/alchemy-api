@@ -1,41 +1,101 @@
 import express from "express";
-import { authenticateToken } from "../auth/auth.middleware";
-import { createArticle, getArticle, getArticles } from "./article.controller";
+import { authenticateToken, isAdmin } from "../auth/auth.middleware";
+import {
+  createArticle,
+  getArticle,
+  getArticles,
+  generateArticleDescription,
+} from "./article.controller";
 import { createArticleSchema } from "./article.schema";
+import errorHandler from "../services/error/errorHandler";
+import { createLogger } from "../services/logger/logger";
+
 const router = express.Router();
+const logger = createLogger("ArticlesRouter");
 
-router.post("/create", authenticateToken, async function (req: any, res, next) {
-  const { user, body } = req;
+router.get(
+  "/",
+  errorHandler(async function (req: any, res, next) {
+    const data = await getArticles({ draft: false });
+    res.status(200).json(data);
+  })
+);
 
-  const { error } = createArticleSchema.validate(body);
+router.get(
+  "/admin",
+  [authenticateToken, isAdmin],
+  errorHandler(async function (req: any, res, next) {
+    const data = await getArticles();
+    res.status(200).json(data);
+  })
+);
 
-  if (error) {
-    return res.status(400).json({ message: error.message });
-  }
+router.post(
+  "/create",
+  authenticateToken,
+  errorHandler(async function (req: any, res, next) {
+    const { user, body } = req;
 
-  const data = await createArticle({ user }, body);
+    const { error } = createArticleSchema.validate(body);
 
-  res.status(200).json(data);
-});
+    if (error) {
+      return res.status(400).json({ message: error.message });
+    }
 
-router.get("/:id", authenticateToken, async function (req: any, res, next) {
-  const { user, params } = req;
+    const data = await createArticle({ user }, body);
 
-  if (!params.id) res.sendStatus(404);
+    res.status(200).json(data);
+  })
+);
 
-  const data = await getArticle({ user }, { id: params.id });
+router.post(
+  "/generate-description",
+  authenticateToken,
+  errorHandler(async function (req: any, res, next) {
+    const { user, body } = req;
 
-  res.status(200).json(data);
-});
+    if (!body.prompt) res.sendStatus(400);
 
-router.get("/", authenticateToken, async function (req: any, res, next) {
-  const { user, params } = req;
+    const data = await generateArticleDescription(
+      { user },
+      { prompt: body.prompt }
+    );
 
-  if (!params.id) res.sendStatus(404);
+    if (data.error) {
+      logger.error({ error: data.error }, "an Unknown Error Occured");
+      res.status(500);
+    }
 
-  const data = await getArticles({ user }, { id: params.id });
+    res.status(200).json(data);
+  })
+);
 
-  res.status(200).json(data);
-});
+router.get(
+  "/:id",
+  authenticateToken,
+  errorHandler(async function (req: any, res, next) {
+    const { user, params } = req;
+
+    if (!params.id) res.sendStatus(404);
+
+    const data = await getArticle({ user }, { id: params.id });
+
+    res.status(200).json(data);
+  })
+);
+
+router.get(
+  "/slug/:slug",
+  authenticateToken,
+  errorHandler(async function (req: any, res, next) {
+    const { user, params } = req;
+
+    if (!params.slug) res.sendStatus(404);
+
+    const data = await getArticle({ user }, { slug: params.slug });
+
+    res.status(200).json(data);
+  })
+);
 
 export default router;

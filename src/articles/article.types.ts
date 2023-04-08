@@ -8,3 +8,11 @@ export interface Article {
   publishedDate: Date;
   imageId: string;
 }
+
+export interface ArticlesFilter {
+  id?: number;
+  title?: string;
+  authorId?: number;
+  category?: string;
+  draft?: boolean;
+}

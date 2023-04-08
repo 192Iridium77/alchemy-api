@@ -16,7 +16,7 @@ exports.up = async function (knex) {
       .inTable("markdownComponents")
       .onDelete("CASCADE");
     table.integer("componentOrder").unsigned().notNullable();
-    table.timestamps();
+    table.timestamps(true, true);
     table.primary(["articleId", "componentOrder"]);
     table.unique(["articleId", "componentOrder"]);
     knex.raw(`

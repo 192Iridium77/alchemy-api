@@ -5,7 +5,7 @@ import cors from "cors";
 import { loggerMiddleware } from "./services/logger/logger";
 
 import router from "./router";
-import errorMiddleware from "./services/logger/error";
+import errorMiddleware from "./services/error/error.middleware";
 
 const app = express();
 
