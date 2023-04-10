@@ -17,7 +17,7 @@ const logger = createLogger("ArticlesRouter");
 router.get(
   "/",
   errorHandler(async function (req: any, res, next) {
-    const data = await getArticles({ published: false });
+    const data = await getArticles({ published: true });
     res.status(200).json(data);
   })
 );
