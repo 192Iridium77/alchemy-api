@@ -72,7 +72,6 @@ router.post(
 
 router.get(
   "/:id",
-  authenticateToken,
   errorHandler(async function (req: any, res, next) {
     const { user, params } = req;
 
