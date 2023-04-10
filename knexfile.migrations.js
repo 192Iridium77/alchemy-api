@@ -8,6 +8,7 @@ const connection = process.env.DB_CONNECTION_STRING || {
   password: process.env.DB_PASSWORD,
   database: process.env.DB_NAME,
 };
+console.log("🚀 ~ file: knexfile.migrations.js:5 ~ connection:", connection);
 
 /**
  * @type { Object.<string, import("knex").Knex.Config> }

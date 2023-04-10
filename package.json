@@ -10,6 +10,8 @@
     "migrate:down": "knex migrate:down --knexfile knexfile.migrations.js",
     "migrate:make": "knex migrate:make --knexfile knexfile.migrations.js",
     "prod:create-db": "NODE_ENV=production ts-node ./src/services/db/create | bunyan --color",
+    "prod:migrate:up": "knex migrate:up --knexfile knexfile.migrations.js --env production",
+    "prod:migrate:down": "knex migrate:down --knexfile knexfile.migrations.js --env production",
     "prod:migrate:latest": "knex migrate:latest --knexfile knexfile.migrations.js --env production",
     "build": "rm -rf dist && tsc",
     "check-circular-deps": "madge --circular --extensions ts ./src/server.ts",

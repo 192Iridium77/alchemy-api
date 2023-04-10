@@ -1,5 +1,5 @@
-exports.up = function (knex) {
-  return knex.schema.createTable("images", function (table) {
+exports.up = async function (knex) {
+  await knex.schema.createTable("images", function (table) {
     table.uuid("id").primary().defaultTo(knex.raw("gen_random_uuid()"));
     table.string("url");
     table.string("alt");
@@ -11,6 +11,6 @@ exports.up = function (knex) {
   });
 };
 
-exports.down = function (knex) {
-  return knex.schema.dropTableIfExists("images");
+exports.down = async function (knex) {
+  await knex.schema.dropTableIfExists("images");
 };
