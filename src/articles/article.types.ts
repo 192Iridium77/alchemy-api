@@ -2,7 +2,7 @@ export interface Article {
   id: string;
   title: string;
   slug: string;
-  draft: boolean;
+  published: boolean;
   description: string;
   author: string;
   publishedDate: Date;
@@ -14,5 +14,5 @@ export interface ArticlesFilter {
   title?: string;
   authorId?: number;
   category?: string;
-  draft?: boolean;
+  published?: boolean;
 }

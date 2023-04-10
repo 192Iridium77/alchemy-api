@@ -6,10 +6,10 @@ const getImage = (context, { id }) => {
   return ImageModel.find({ id });
 };
 
-const getImages = () => {
+const getImages = (context, filters) => {
   // todo authorisation
   // todo filters
-  return ImageModel.findAll();
+  return ImageModel.findAll(filters);
 };
 
 export { getImages, getImage };

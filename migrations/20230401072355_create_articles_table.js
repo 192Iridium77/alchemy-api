@@ -4,8 +4,8 @@ exports.up = async function (knex) {
     table.string("title");
     table.string("question");
     table.string("slug").unique().notNullable();
-    table.boolean("draft").defaultTo(false);
-    table.string("description");
+    table.boolean("published").defaultTo(false);
+    table.string("description", 2000);
     table.uuid("imageId").references("id").inTable("images");
     table.string("author");
     table.date("publishedDate"); // 'YYYY-MM-DD'

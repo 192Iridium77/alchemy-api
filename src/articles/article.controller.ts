@@ -7,6 +7,10 @@ const createArticle = (context, props) => {
   return ArticleModel.create(props);
 };
 
+const updateArticle = (context, id, props) => {
+  return ArticleModel.update(id, props);
+};
+
 const getArticles = (filters: ArticlesFilter = {}) => {
   // todo authorisation
   return ArticleModel.findAll(filters);
@@ -18,9 +22,15 @@ const getArticle = (context, filters) => {
   return ArticleModel.find(filters);
 };
 
-const generateArticleDescription = (context, props: any) => {
+const generateArticleContent = (context, props: any) => {
   if (!props.prompt) throw new Error("needs a prompt");
-  return articleGenerator.generateArticleDescription(props.prompt);
+  return articleGenerator.generateArticleContent(props.prompt);
 };
 
-export { getArticles, getArticle, createArticle, generateArticleDescription };
+export {
+  getArticles,
+  getArticle,
+  createArticle,
+  generateArticleContent,
+  updateArticle,
+};

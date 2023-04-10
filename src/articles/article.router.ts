@@ -2,9 +2,10 @@ import express from "express";
 import { authenticateToken, isAdmin } from "../auth/auth.middleware";
 import {
   createArticle,
+  updateArticle,
   getArticle,
   getArticles,
-  generateArticleDescription,
+  generateArticleContent,
 } from "./article.controller";
 import { createArticleSchema } from "./article.schema";
 import errorHandler from "../services/error/errorHandler";
@@ -16,7 +17,7 @@ const logger = createLogger("ArticlesRouter");
 router.get(
   "/",
   errorHandler(async function (req: any, res, next) {
-    const data = await getArticles({ draft: false });
+    const data = await getArticles({ published: false });
     res.status(200).json(data);
   })
 );
@@ -39,6 +40,10 @@ router.post(
     const { error } = createArticleSchema.validate(body);
 
     if (error) {
+      logger.warn(
+        { user, body, error },
+        "A validation error occured while creating an Article."
+      );
       return res.status(400).json({ message: error.message });
     }
 
@@ -49,22 +54,17 @@ router.post(
 );
 
 router.post(
-  "/generate-description",
+  "/generate",
   authenticateToken,
   errorHandler(async function (req: any, res, next) {
     const { user, body } = req;
 
     if (!body.prompt) res.sendStatus(400);
 
-    const data = await generateArticleDescription(
+    const data = await generateArticleContent(
       { user },
       { prompt: body.prompt }
     );
-
-    if (data.error) {
-      logger.error({ error: data.error }, "an Unknown Error Occured");
-      res.status(500);
-    }
 
     res.status(200).json(data);
   })
@@ -79,6 +79,22 @@ router.get(
     if (!params.id) res.sendStatus(404);
 
     const data = await getArticle({ user }, { id: params.id });
+
+    res.status(200).json(data);
+  })
+);
+
+router.post(
+  "/:id/update",
+  authenticateToken,
+  errorHandler(async function (req: any, res) {
+    const { user, params, body } = req;
+
+    // todo validate
+
+    if (!params.id) res.sendStatus(404);
+
+    const data = await updateArticle({ user }, params.id, body);
 
     res.status(200).json(data);
   })

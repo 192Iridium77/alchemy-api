@@ -6,19 +6,38 @@ const table = {
   name: "articles",
 };
 
-const availableFields = ["id", "title", "slug", "draft", "description"];
+const availableFields = [
+  "id",
+  "question",
+  "title",
+  "slug",
+  "published",
+  "description",
+  "imageId",
+  "author",
+  "publishedDate",
+];
 
 const query = db.from(table.name);
 
 const create = async ({
   title,
   slug,
-  draft,
+  published,
   description,
   author,
+  imageId,
 }: Partial<Article>) => {
   return db(table.name)
-    .insert({ id: uuid(), title, slug, draft, description, author })
+    .insert({
+      id: uuid(),
+      title,
+      slug,
+      published,
+      description,
+      author,
+      imageId,
+    })
     .timeout(config.timeout);
 };
 
@@ -43,9 +62,7 @@ const update = async (id, props) => {
   return db
     .update(props)
     .from(table.name)
-    .where({
-      id,
-    })
+    .where({ id })
     .returning(availableFields)
     .timeout(config.timeout);
 };
