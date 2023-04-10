@@ -101,7 +101,6 @@ router.post(
 
 router.get(
   "/slug/:slug",
-  authenticateToken,
   errorHandler(async function (req: any, res, next) {
     const { user, params } = req;
 
