@@ -13,7 +13,7 @@ app.use(
   cors({
     origin:
       process.env.NODE_ENV === "production"
-        ? "https://alchemy-tech.com"
+        ? "https:/mattmartin.au"
         : "http://localhost:3000",
   })
 );
