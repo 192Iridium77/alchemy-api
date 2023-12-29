@@ -28,17 +28,17 @@ const create = async ({
   author,
   imageId,
 }: Partial<Article>) => {
-  return db(table.name)
-    .insert({
-      id: uuid(),
-      title,
-      slug,
-      published,
-      description,
-      author,
-      imageId,
-    })
-    .timeout(config.timeout);
+  const article = {
+    id: uuid(),
+    title,
+    slug,
+    published,
+    description,
+    author,
+    imageId,
+  };
+  await db(table.name).insert(article).timeout(config.timeout);
+  return article;
 };
 
 const findAll = async (filters): Promise<Article[]> => {
